@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Taxas e Descontos - Shopee</title>
+    <style>
+        :root {
+            --shopee-orange: #ee4d2d;
+            --shopee-light: #fdf6f5;
+            --bg-color: #f6f6f6;
+            --text-color: #333;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+            overflow: hidden;
+        }
+        .header {
+            background-color: var(--shopee-orange);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+        .tabs {
+            display: flex;
+            background-color: #f1f1f1;
+        }
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: 0.3s;
+        }
+        .tab.active {
+            color: var(--shopee-orange);
+            border-bottom: 3px solid var(--shopee-orange);
+            background-color: white;
+        }
+        .content {
+            padding: 20px;
+            display: none;
+        }
+        .content.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input:focus {
+            outline: none;
+            border-color: var(--shopee-orange);
+        }
+        button {
+            width: 100%;
+            background-color: var(--shopee-orange);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover {
+            background-color: #d73d1f;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: var(--shopee-light);
+            border: 1px dashed var(--shopee-orange);
+            border-radius: 4px;
+            text-align: center;
+            display: none;
+        }
+        .result h2 {
+            margin: 0 0 10px 0;
+            color: var(--shopee-orange);
+            font-size: 24px;
+        }
+        .details {
+            font-size: 14px;
+            color: #666;
+            text-align: left;
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Ferramentas do Vendedor</h1>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab('taxas')">Preço Ideal</div>
+        <div class="tab" onclick="switchTab('desconto')">Falso Desconto</div>
+    </div>
+
+    <div id="taxas" class="content active">
+        <p style="font-size: 14px; color: #666;">Descubra por quanto vender para receber exatamente o valor que você quer, já descontando as novas taxas.</p>
+        <div class="form-group">
+            <label for="valorDesejado">Valor Líquido que deseja receber (R$):</label>
+            <input type="number" id="valorDesejado" placeholder="Ex: 50.00" step="0.01">
+        </div>
+        <button onclick="calcularPreco()">Calcular Preço de Venda</button>
+
+        <div id="resultadoTaxas" class="result">
+            <p style="margin:0; font-size:14px;">Você deve cobrar:</p>
+            <h2 id="precoCobrar">R$ 0,00</h2>
+            <div id="detalhesTaxas" class="details"></div>
+        </div>
+    </div>
+
+    <div id="desconto" class="content">
+        <p style="font-size: 14px; color: #666;">Crie aquele "Preço Riscado". Defina o valor final e o % de desconto que quer mostrar.</p>
+        <div class="form-group">
+            <label for="precoFinal">Preço Final que o cliente vai pagar (R$):</label>
+            <input type="number" id="precoFinal" placeholder="Ex: 100.00" step="0.01">
+        </div>
+        <div class="form-group">
+            <label for="porcentagemDesconto">Desconto que
